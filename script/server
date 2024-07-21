@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# script/bootstrap: is used to start the application.
+
+set -e
+
+cd "$(dirname "$0")/.."
+./script/update
+
+cd bench/
+
+bench start

@@ -1,0 +1,66 @@
+#!/bin/sh
+
+# Set up application for the first time after cloning, or set it back to the initial first unused state.
+
+set -e
+
+cd "$(dirname "$0")/.."
+script/bootstrap
+
+create_new_site() {
+  bench new-site "$SITE_NAME" \
+  --db-host=localhost \
+  --db-type=mariadb \
+  --db-root-password=root \
+  --no-mariadb-socket \
+  --admin-password=admin \
+  --install-app=erpnext
+}
+
+set_config() {
+  bench set-config -g developer_mode 1
+  bench set-config -g db_host localhost;
+  bench set-config -gp db_port 3306;
+  bench set-config -g redis_cache "redis://localhost:6379";
+  bench set-config -g redis_queue "redis://localhost:6379";
+  bench set-config -g redis_socketio "redis://localhost:6379";
+  bench set-config -gp socketio_port 9000;
+}
+
+bench_init(){
+  bench init workspace \
+  --frappe-path="https://github.com/frappe/frappe" \
+  --frappe-branch="version-15" \
+  --apps_path="apps.json" \
+  --skip-redis-config-generation \
+  --verbose;
+}
+
+WORKSPACE="workspace"
+SITE_NAME="development.localhost"
+
+echo "==> Resetting Docker Services"
+docker compose down --volumes
+sleep 2
+docker compose up -d
+
+if [ -d $WORKSPACE ]; then
+  echo "==> Resetting bench workspace"
+  cd $WORKSPACE/
+  set_config;
+  echo "==> Waiting for MariaDB"
+  sleep 20
+  echo "==> Dropping site : ${SITE_NAME}"
+  if [ -d "sites/$SITE_NAME" ]; then
+    bench drop-site --force --no-backup --db-root-password=root $SITE_NAME
+  fi
+  create_new_site;
+else
+  echo "==> Creating bench workspace"
+  bench_init;
+  cd $WORKSPACE/
+  set_config;
+  create_new_site;
+fi
+
+
