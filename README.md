@@ -2,6 +2,8 @@
 
 Quickly start developing using frappe/erpnext.
 
+[Faro Custom App](https://github.com/chaukematimu/faro) will be installed when creating site "development.localhost"
+
 # Requirements :
 
 - [Docker Desktop](https://docs.docker.com/desktop/install/mac-install/)
@@ -13,11 +15,5 @@ $ git clone https://github.com/chaukematimu/frappe-setup.git
 $ cd frappe-setup
 $ script/setup
 $ script/runserver
-```
-
-Creating new app :
-
-```shell
-$ script/console new-app --no-git <APP_NAME> 
 ```
 
