@@ -7,6 +7,6 @@ set -e
 cd "$(dirname "$0")/.."
 ./script/update
 
-cd bench/
+cd workspace/
 
 bench start

@@ -11,5 +11,13 @@ Quickly start developing using frappe/erpnext.
 ```shell
 $ git clone https://github.com/chaukematimu/frappe-setup.git
 $ cd frappe-setup
-$ ./script/setup # ONLY apps defined in apps.json will be installed by default.
+$ script/setup
+$ script/runserver
 ```
+
+Creating new app :
+
+```shell
+$ script/console new-app --no-git <APP_NAME> 
+```
+

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# script/console: is used to open a console for your application.
+
+set -e
+set -x
+
+cd "$(dirname "$0")/../workspace"
+
+bench ${*}
