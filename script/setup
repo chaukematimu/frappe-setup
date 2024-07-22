@@ -14,7 +14,8 @@ create_new_site() {
   --db-root-password=root \
   --no-mariadb-socket \
   --admin-password=admin \
-  --install-app=erpnext
+  --install-app=erpnext \
+  --install-app=faro
 }
 
 set_config() {
